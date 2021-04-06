@@ -4,20 +4,42 @@ import "./eight-ball.css";
 function EightBall(props) {
     const { answers } = props;
 
-    const [answer, setAnswer] = useState({msg: "Think of a Question", color: "black"});
+    const [answer, setAnswer] = useState({ msg: "Think of a Question", color: "black" });
+    const [scores, setScores] = useState({greenScore: 0, redScore: 0, goldenrodScore: 0});
 
-    let randAnswer = function() {
+    let counters = function () {
+        if (answer.color === "green") {
+            scores.greenScore++
+        } else if (answer.color === "red") {
+            scores.redScore++
+        } else if (answer.color === "goldenrod") {
+            scores.goldenrodScore++
+        }
+    }
+    
+    let randAnswer = function () {
         let idx = Math.floor(Math.random() * answers.length);
+        setScores(counters);
         return answers[idx];
     }
+    
+    console.log("scores", scores)
+
+    // {scores.greenScore}
+    // {scores.redScore}
+    // {scores.goldenrodScore}
 
     return (
-        <div className="eightball" onClick={() => setAnswer(randAnswer())} style={{background: answer.color}}>
-            {answer.msg}
+        <div className="gameDiv">
+            <div className="eightball" onClick={() => setAnswer(randAnswer)}style={{ background: answer.color }}>
+                {answer.msg}
+                
+            </div>
+            <div className="button">
+                <button onClick={() => setAnswer({ msg: "Think of a Question", color: "black" })}>Reset!</button>
+            </div>
         </div>
     )
-
-
 }
 
 EightBall.defaultProps = {
@@ -42,8 +64,8 @@ EightBall.defaultProps = {
         { msg: "My sources say no.", color: "red" },
         { msg: "Outlook not so good.", color: "red" },
         { msg: "Very doubtful.", color: "red" },
-      ]
-      
+    ]
+
 }
 
 export default EightBall;
